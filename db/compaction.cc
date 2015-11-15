@@ -134,7 +134,7 @@ bool Compaction::IsFullCompaction(
     total_num_files += vstorage->NumLevelFiles(l);
   }
   for (size_t i = 0; i < inputs.size(); i++) {
-    num_files_in_compaction += inputs[i].size();
+    num_files_in_compaction += static_cast<int>(inputs[i].size());
   }
   return num_files_in_compaction == total_num_files;
 }

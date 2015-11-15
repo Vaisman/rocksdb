@@ -669,7 +669,7 @@ int DBTestBase::TotalLiveFiles(int cf) {
   }
   int num_files = 0;
   for (auto& level : cf_meta.levels) {
-    num_files += level.files.size();
+    num_files += static_cast<int>(level.files.size());
   }
   return num_files;
 }

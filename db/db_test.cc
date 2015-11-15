@@ -2173,7 +2173,7 @@ TEST_F(DBTest, RecoverWithTableHandle) {
     dbfull()->TEST_GetFilesMetaData(handles_[1], &files);
     int total_files = 0;
     for (const auto& level : files) {
-      total_files += level.size();
+      total_files += static_cast<int>(level.size());
     }
     ASSERT_EQ(total_files, 3);
     for (const auto& level : files) {

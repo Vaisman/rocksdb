@@ -112,7 +112,8 @@ SSIZE_T pwrite(HANDLE hFile, const char* src, size_t numBytes,
 
   unsigned long bytesWritten = 0;
 
-  if (FALSE == WriteFile(hFile, src, numBytes, &bytesWritten, &overlapped)) {
+  if (FALSE == WriteFile(hFile, src, static_cast<DWORD>(numBytes), &bytesWritten,
+    &overlapped)) {
     result = -1;
   } else {
     result = bytesWritten;
@@ -134,7 +135,8 @@ SSIZE_T pread(HANDLE hFile, char* src, size_t numBytes, uint64_t offset) {
 
   unsigned long bytesRead = 0;
 
-  if (FALSE == ReadFile(hFile, src, numBytes, &bytesRead, &overlapped)) {
+  if (FALSE == ReadFile(hFile, src, static_cast<DWORD>(numBytes), &bytesRead,
+    &overlapped)) {
     return -1;
   } else {
     result = bytesRead;
@@ -954,7 +956,7 @@ class WinWritableFile : public WritableFile {
 
     DWORD bytesWritten = 0;
     if (!WriteFile(hFile_, data.data(),
-        data.size(), &bytesWritten, NULL)) {
+        static_cast<DWORD>(data.size()), &bytesWritten, NULL)) {
       auto lastError = GetLastError();
       s = IOErrorFromWindowsError(
         "Failed to WriteFile: " + filename_,
