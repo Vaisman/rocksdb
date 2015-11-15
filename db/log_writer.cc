@@ -47,7 +47,7 @@ Status Writer::AddRecord(const Slice& slice) {
   Status s;
   bool begin = true;
   do {
-    const int leftover = kBlockSize - block_offset_;
+    const size_t leftover = kBlockSize - block_offset_;
     assert(leftover >= 0);
     if (leftover < header_size) {
       // Switch to a new block
