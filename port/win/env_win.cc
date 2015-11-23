@@ -101,6 +101,7 @@ typedef std::unique_ptr<void, decltype(CloseHandleFunc)> UniqueCloseHandlePtr;
 // rely on the current file offset.
 SSIZE_T pwrite(HANDLE hFile, const char* src, size_t numBytes,
                uint64_t offset) {
+  assert(numBytes <= std::numeric_limits<DWORD>::max());
   OVERLAPPED overlapped = {0};
   ULARGE_INTEGER offsetUnion;
   offsetUnion.QuadPart = offset;
@@ -124,6 +125,7 @@ SSIZE_T pwrite(HANDLE hFile, const char* src, size_t numBytes,
 
 // See comments for pwrite above
 SSIZE_T pread(HANDLE hFile, char* src, size_t numBytes, uint64_t offset) {
+  assert(numBytes <= std::numeric_limits<DWORD>::max());
   OVERLAPPED overlapped = {0};
   ULARGE_INTEGER offsetUnion;
   offsetUnion.QuadPart = offset;
@@ -950,7 +952,7 @@ class WinWritableFile : public WritableFile {
 
     // Used for buffered access ONLY
     assert(use_os_buffer_);
-    assert(data.size() < std::numeric_limits<int>::max());
+    assert(data.size() < std::numeric_limits<DWORD>::max());
 
     Status s;
 
