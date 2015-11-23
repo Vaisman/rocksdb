@@ -38,6 +38,7 @@ bool JSONDocumentBuilder::WriteEndObject() {
 
 bool JSONDocumentBuilder::WriteKeyValue(const std::string& key,
                                         const JSONDocument& value) {
+  assert(key.size() <= std::numeric_limits<uint8_t>::max());
   size_t bytesWritten = writer_->writeKey(key.c_str(),
     static_cast<uint8_t>(key.size()));
   if (bytesWritten == 0) {
